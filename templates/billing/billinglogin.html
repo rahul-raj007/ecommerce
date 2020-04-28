@@ -1,0 +1,41 @@
+{% extends 'master.html' %}
+<!--  -->
+{% load static %}
+{% block stylesheet %} 
+<link rel="stylesheet" href="{% static 'css/billing.css' %}">
+{% endblock stylesheet %}
+<!--  -->
+{% block content %}
+
+<!--  -->
+<div class="container ">
+<div class="row boxs">
+  <div class="col-4 mr-auto ml-auto custom pt-2">
+    {% if not request.user.is_authenticated %}
+    <h3 class="continue">Continue as Guest User</h3>
+    <div class="anonymous-form">
+      <form method="POST" action="{% url 'billing:anonymous' %}">
+        {% csrf_token %}
+        {{form.as_p}}
+        <div class="row">
+            <div class="col-10 mx-auto">
+              <button class="btn btn-info btn-sm btn-block">submit</button>
+            </div>
+        </div>
+      </form>
+      <div class="mt-3 text-center">
+        <h5>Already A Register Member ? <span><a href="{% url 'user:login_url' %}">Login</a></span></h5>
+        
+      </div>
+      {% endif %}
+
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+  <!--  -->
+  {% endblock content %}
+</h1>

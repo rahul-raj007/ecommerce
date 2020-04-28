@@ -1,0 +1,119 @@
+{% extends 'master.html' %}
+
+<!--  -->
+{% load static %}
+
+<!--  -->
+{% block stylesheet %}
+<!--  -->
+
+<link rel="stylesheet" href="{% static 'css/orderfinalchecklist.css' %}" />
+<!--  -->
+{% endblock stylesheet %} {% block content %}
+<div class="container">
+  <div class="row info-box">
+    <div class="col-2 my-auto"><h6>Order no:</h6></div>
+    <div class="col-3 my-auto"><h6>{{order_obj.order_id}}</h6></div>
+    <div class="col-2 my-auto"><h6>Email id :</h6></div>
+    <div class="col-3 my-auto">
+      <h6>
+        {% if order_obj.billing_profile_register_user %}
+        {{order_obj.billing_profile_register_user}} {% else %}
+        {{order_obj.billing_profile_anynous_user}} {% endif %}
+      </h6>
+    </div>
+  </div>
+  <!--product table -->
+  <div class="row">
+    <div class="col-5 mt-5">
+      <h5 class="text-center mb-3">Purchase informations</h5>
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in product%}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{product.name}}</td>
+            <td>{{product.price}}</td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="2">Product Total</td>
+            <td>{{order_obj.cart.subtotals}}</td>
+          </tr>
+          <tr>
+            <td colspan="2">Product Total (including tax.)</td>
+            <td>{{order_obj.cart.total}}</td>
+          </tr>
+          <tr>
+            <td colspan="2">Delivery Charge</td>
+            <td>{{order_obj.delivery_cost}}</td>
+          </tr>
+          <tr>
+            <td colspan="2">Final Charge</td>
+            <td>{{order_obj.total}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Billing Addresss -->
+    <div class="col-5">
+      <div class="mt-5 address-box">
+        <h6 class="text-center">Billing Address</h6>
+        <div class="row">
+          <div class="col">{{order_obj.billing_address.address_line_1}}</div>
+        </div>
+        <div class="row">
+          <div class="col">{{order_obj.billing_address.address_line_2}}</div>
+        </div>
+        <div class="row">
+          <div class="col-2">City :</div>
+          <div class="col-4">{{order_obj.billing_address.city}}</div>
+          <div class="col-2">State :</div>
+          <div class="col-4">{{order_obj.billing_address.state}}</div>
+        </div>
+        <div class="row">
+          <div class="col-3">Country :</div>
+          <div class="col-4">{{order_obj.billing_address.country}}</div>
+          <div class="col-2">PIN :</div>
+          <div class="col-3">{{order_obj.billing_address.postal}}</div>
+        </div>
+      </div>
+      <div class="mt-3 address-box">
+        <h6 class="text-center">Shipping Address</h6>
+        <div class="row">
+          <div class="col">{{order_obj.shipping_address.address_line_1}}</div>
+        </div>
+        <div class="row">
+          <div class="col">{{order_obj.shipping_address.address_line_2}}</div>
+        </div>
+        <div class="row">
+          <div class="col-2">City :</div>
+          <div class="col-4">{{order_obj.shipping_address.city}}</div>
+          <div class="col-2">State :</div>
+          <div class="col-4">{{order_obj.shipping_address.state}}</div>
+        </div>
+        <div class="row">
+          <div class="col-3">Country :</div>
+          <div class="col-4">{{order_obj.shipping_address.country}}</div>
+          <div class="col-2">PIN :</div>
+          <div class="col-3">{{order_obj.shipping_address.postal}}</div>
+        </div>
+      </div>
+      <div style="float: right;" class="mt-5">
+        <a href="{% url 'payment:payment_page' %}">
+          <button class="btn btn-info">Proceed to Payments</button></a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  -->
+{% endblock content %}

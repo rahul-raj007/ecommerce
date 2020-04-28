@@ -1,0 +1,73 @@
+{% extends 'master.html' %}
+<!--  -->
+{% load static %}
+<!--  -->
+{% block content %}
+
+<div class="container">
+  <div class="row mt-5" style="border: 3px solid #495970;">
+    <div class="col-2">
+      <h6>ORDER ID:</h6>
+    </div>
+    <div class="col-3">
+      <h6>{{order_info.order_id}}</h6>
+    </div>
+    <div class="col-2">
+      <h6>EMAIL ADDRESS:</h6>
+    </div>
+    <div class="col-3">
+      {% if request.user.is_authenticated %}
+      <h6>{{order_info.billing_profile_register_user}}</h6>
+      {% else %}
+      <h6>{{order_info.billing_profile_anonymus_user}}</h6>
+      {% endif %}
+    </div>
+  </div>
+  <div class="my-3">
+    <table class="table">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">PRODUCT</th>
+          <th scope="col">PRICE</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in product %}
+        <tr>
+          <th scope="row">{{forloop.counter}}</th>
+          <td>{{product.name}}</td>
+          <td>{{product.price}}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="1"></td>
+          <td class="text-center">Product Total</td>
+          <td>{{subtotal}}</td>
+        </tr>
+        <tr>
+          <td colspan="1"></td>
+          <td class="text-center">Product Total including Taxs.</td>
+          <td>{{total}}</td>
+        </tr>
+        <tr>
+          <td colspan="1"></td>
+          <td class="text-center">Dilivery Charge</td>
+          <td>{{order_info.delivery_cost}}</td>
+        </tr>
+        <tr>
+          <td colspan="1"></td>
+          <td class="text-center">Total Charge</td>
+          <td>{{order_info.total}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="float: right;">
+    <a href="{% url 'address:shipping_address' %}">
+      <button class="btn btn-info">proceed to add Adrdress</button>
+    </a>
+  </div>
+</div>
+
+{% endblock content %}

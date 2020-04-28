@@ -1,0 +1,47 @@
+{% extends "master.html "%} {% load static %}
+<!--  -->
+{% block stylesheet %}
+<link
+  href="{% static 'css/user/login.css' %}"
+  rel="stylesheet"
+  type="text/css"
+  media="all"
+/>
+{% endblock stylesheet %}
+
+<!--  -->
+{% block content %}
+<div class="container">
+  <div class="row boxes">
+    <div class="col-4 mx-auto custom pt-4">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="py-2">
+          <label for="">Email</label>
+          {{form.email}}
+        </div>
+        <div class="py-4">
+          <label for="">Password</label>
+          {{form.password}}
+        </div>
+        <div class="row">
+          <div class="col-10 mx-auto">
+            <button class="btn btn-info btn-block">Login</button>
+          </div>
+        </div>
+      </form>
+      <div class="text-center mt-3">
+        <h6>
+          Not registered ?
+          <span>
+            <a href="{% url 'user:user_register' %}" class="link-color">
+              Create an account
+            </a>
+          </span>
+        </h6>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

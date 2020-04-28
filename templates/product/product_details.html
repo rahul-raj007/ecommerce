@@ -1,0 +1,122 @@
+{% extends "master.html" %}
+<!--  -->
+{% load static %}
+<!--  -->
+
+{% block content %}
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-6">
+      <img src="{{product.image.url}}" width="500rem" height="500rem" />
+    </div>
+    <div class="col-6">
+      <div class="row my-2">
+        <div class="col-12">
+          <h1>{{product.name}}</h1>
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-8">
+          {{product.description}}
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-8">
+          <h3>Price: <span>{{product.price}}</span></h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form method="POST" action="{% url 'cart:updatecart' %}" id="forms">
+            {% csrf_token %} {% if product in cartitem %}
+            <div class="form-btns">
+              <input type="hidden" name="removeitem" value="{{product.slug}}" />
+              <button type="submit" id="removefromcart" class="btn btn-warning">
+                Remove
+              </button>
+            </div>
+            {% else %}
+            <div class="form-btns">
+              <input type="hidden" name="additem" value="{{product.slug}}" />
+              <button type="submit" id="addtocart" class="btn btn-info">
+                Add To Cart
+              </button>
+            </div>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- {% if product in cartitem %}
+<h1>the items already in cart</h1>
+<form
+  method="POST"
+  action="{% url 'cart:updatecart' %}"
+  id="removefromcartform"
+>
+  {% csrf_token %}
+  <input type="hidden" name="removeitem" value="{{product.slug}}" />
+  <button type="submit" id="removefromcart">
+    remove
+  </button>
+</form>
+{% else %}
+<h1>add to cart</h1>
+<form method="POST" action="{% url 'cart:updatecart' %}" id="addtocartform">
+  {% csrf_token %}
+  <input type="hidden" name="additem" value="{{product.slug}}" id="" />
+  <button type="submit" id="addtocart">
+    Add To Cart
+  </button>
+</form>
+{% endif %} -->
+<!--  -->
+{% endblock content %} {% block javascript %}
+<!--  -->
+<script>
+  $(document).ready(function () {
+    var form = $("#forms");
+    form.submit(function (event) {
+      event.preventDefault();
+      console.log("form is not sending");
+      var actionendpoint, httpmethod, formdata;
+      actionendpoint = form.attr("action");
+      console.log(actionendpoint);
+      httpmethod = form.attr("method");
+      formdata = form.serialize();
+
+      var htmls = form.find(".form-btns");
+
+      $.ajax({
+        method: httpmethod,
+        url: actionendpoint,
+        data: formdata,
+        success: function (data) {
+          console.log("success");
+          console.log(data);
+          if (data.added) {
+            var paste =
+              "<input type='hidden' name='removeitem' value='{{product.slug}}'><button type='submit' id='addtocart' class='btn btn-warning'>Remove</button>";
+            htmls.html(paste);
+          } else {
+            var paste =
+              "<input type='hidden' name='additem' value='{{product.slug}}'><button type='submit' id='addtocart' class='btn btn-info'>Add To Cart</button>";
+            htmls.html(paste);
+          }
+          var cartitemtotal = $("#totalitem");
+          cartitemtotal.text(data.totalitemincart);
+        },
+        error: function (errordata) {
+          console.log("error");
+          console.log(errordata);
+        },
+      });
+    });
+  });
+</script>
+
+{% endblock javascript %}

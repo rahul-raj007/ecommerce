@@ -1,0 +1,15 @@
+body {
+  background-image: linear-gradient(to bottom right, #2e5734, #2d5734);
+}
+
+.custom {
+  background-color: #0d1c0f;
+  border-radius: 2%;
+  color: whitesmoke;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+.boxes {
+  margin-top: 10%;
+}

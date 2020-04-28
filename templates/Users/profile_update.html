@@ -1,0 +1,56 @@
+{% extends 'master.html' %}
+<!--  -->
+{% load static %}
+<!--  -->
+{% load bootstrap4 %} {% bootstrap_css %}
+<!--  -->
+{% block content %}
+<div class="container">
+  {% bootstrap_javascript jquery='full' %}
+
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row my-2">
+      <div class="col-3">
+        <h6>FIRST NAME</h6>
+      </div>
+      <div class="col-5">{{form.first_name}}</div>
+    </div>
+    <div class="row my-2">
+      <div class="col-3">
+        <h6>LAST NAME</h6>
+      </div>
+      <div class="col-5">{{form.last_name}}</div>
+    </div>
+
+    <div class="row my-2">
+      <div class="col-3">
+        <h6>STATE</h6>
+      </div>
+      <div class="col-5">{{form.state}}</div>
+    </div>
+    <div class="row my-2">
+      <div class="col-3">
+        <h6>COUNTRY</h6>
+      </div>
+      <div class="col-5">{{form.country}}</div>
+    </div>
+    <div class="row my-2">
+      <div class="col-3">
+        <h6>Date Of Birth</h6>
+      </div>
+      <div class="col-5">
+        {{ form.media }} {{form.DOB}}
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-3">
+        <h6>PROFILE PIC</h6>
+      </div>
+      <div class="col-5">{{form.profile_pic}}</div>
+      <button type="submit" class="btn btn-info">update</button>
+    </div>
+  </form>
+</div>
+
+{% endblock content %}

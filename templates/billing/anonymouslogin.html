@@ -1,0 +1,11 @@
+{% extends 'master.html' %}
+<!--  -->
+{% load static %}
+<!--  -->
+{% block content %}
+
+<form method="POST" action="{% url 'billing:anonymous' %}">
+  {% csrf_token %}
+  <button>submit</button>
+</form>
+hello please fills details to continue {% endblock content %}

@@ -1,0 +1,153 @@
+{% extends 'master.html' %}
+
+<!--  -->
+{% load static %} {% block content %} {% block stylesheet %}
+<style>
+  .checkbox-add {
+    border: 1px lightcyan solid;
+    border-radius: 3px;
+  }
+</style>
+
+{% endblock stylesheet %}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>Shipping Address</h1>
+      <hr />
+    </div>
+  </div>
+  {% if request.user.is_authenticated %}
+  <div class="row">
+    <form
+      class="col-md-7"
+      method="POST"
+      action="{% url 'address:authenticated_address' %}"
+    >
+      {% csrf_token %}
+      <input type="hidden" name="address_type" value="{{address_type}}" />
+      <div class="form-group">
+        <label for="inputAddress">Address</label>
+        {{form.address_line_1}}
+      </div>
+      <div class="form-group">
+        <label for="inputAddress2">Address 2</label>
+        {{form.address_line_2}}
+      </div>
+      <div class="form-group">
+        <label for="inputAddress2">City</label>
+        {{form.city}}
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputCity">country</label>
+          {{form.country}}
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputState">State</label>
+          {{form.state}}
+        </div>
+        <div class="form-group col-md-2">
+          <label for="inputZip">ZIP/PIN</label>
+          {{form.postal}}
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Create Address</button>
+    </form>
+    <!-- dispalying all shipping address -->
+    <div class="col-md-5">
+      <form method="POST" action="{% url 'address:billing_address' %}">
+        {% csrf_token %} {% if shipping_addresses.exists %}
+        <!--  -->
+        {% for address in shipping_addresses %}
+        <div class="checkbox-add">
+          <label>
+            <input
+              type="radio"
+              name="shipping_address"
+              value="{{address.id}}"
+            />
+            <span>{{address.address_line_1}}</span> ,
+            <span>{{address.address_line_2}}</span>
+          </label>
+        </div>
+        {% endfor %}
+        <button class="btn btn-success col">Select Adresss and Proceed</button>
+        {% else %}
+      </form>
+      <h3>No Shipping Address is Available</h3>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- dispaling all shiipng adress inf it exists -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!-- shipping form for anonymus user -->
+  {% else %}
+  <div class="row">
+    <form
+      class="col-md-7"
+      method="POST"
+      action="{% url 'address:anonymus_address_creation' %}"
+    >
+      {% csrf_token %}
+      <input type="hidden" name="address_type" value="{{address_type}}" />
+
+      <div class="form-group">
+        <label for="inputAddress">Address</label>
+        {{form.address_line_1}}
+      </div>
+      <div class="form-group">
+        <label for="inputAddress2">Address 2</label>
+        {{form.address_line_2}}
+      </div>
+      <div class="form-group">
+        <label for="inputAddress2">City</label>
+        {{form.city}}
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputCity">country</label>
+          {{form.country}}
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputState">State</label>
+          {{form.state}}
+        </div>
+        <div class="form-group col-md-2">
+          <label for="inputZip">ZIP/PIN</label>
+          {{form.postal}}
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Create Address</button>
+    </form>
+    <!-- displaying all address -->
+    <div class="col-md-5">
+      <form method="POST" action="{% url 'address:billing_address' %}">
+        {% csrf_token %} {% if shipping_addresses.exists %}
+        <!--  -->
+        {% for address in shipping_addresses %}
+        <div class="checkbox-add">
+          <label>
+            <input
+              type="radio"
+              name="shipping_address"
+              value="{{address.id}}"
+            />
+            {{address.address_line_1}}
+          </label>
+        </div>
+        {% endfor %} {% endif %}
+        <button class="btn btn-success col">Select Adresss and Proceed</button>
+      </form>
+    </div>
+  </div>
+  <!-- end of forms -->
+  {% endif %}
+</div>
+{% endblock content %}

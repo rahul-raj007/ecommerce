@@ -1,0 +1,17 @@
+{% extends "master.html" %}
+<!-- setting title -->
+{% block title %}
+<title>ecommerce</title>
+{% endblock title %}
+<!-- includes from master -->
+{% block content %}
+<div class="container">
+  <div class="row">
+    {% for obj in product %}
+    <!--  -->
+    {% include "snippets/card.html" %}
+    <!--  -->
+    {%endfor %}
+  </div>
+</div>
+{% endblock content %}

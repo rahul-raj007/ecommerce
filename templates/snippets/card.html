@@ -1,0 +1,20 @@
+<div class="col-4 my-2">
+  <div class="card" style="width: 18rem; height: 32rem;">
+    {% if obj.image %}
+    <img
+      class="card-img-top"
+      src="{{obj.image.url}}"
+      alt="Card image cap"
+      style="width: 18rem; height: 18rem;"
+    />
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{obj.title|truncatechars:20}}</h5>
+      <p class="card-text">
+        {{obj.description|truncatechars:100 }}
+      </p>
+      <a href="{{obj.get_absolute_url}}" class="btn btn-primary">View</a>
+      <!-- <a href="{% url 'product:details' obj.slug %}" class="btn btn-primary">withlove</a> -->
+    </div>
+  </div>
+</div>

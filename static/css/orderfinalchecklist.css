@@ -1,0 +1,21 @@
+body {
+  background-image: linear-gradient(to bottom right, #2e5734, #2d5734);
+}
+
+.address-box {
+  border: 2px solid #3d784d;
+  padding: 2%;
+  border-radius: 3%;
+  font-weight: 500;
+}
+
+.info-box {
+  border: 2px solid #3d784d;
+  border-radius: 7px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.container {
+  color: whitesmoke;
+}

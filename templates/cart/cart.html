@@ -1,0 +1,120 @@
+{% extends "master.html" %}
+<!--  -->
+{% block content%}
+<div class="container cart-main">
+  {%if product.exists %}
+  <table class="table cart-table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="row">Items</th>
+        <th>Product Name</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody class="cart-body">
+      {% for product in product %}
+      <tr class="cart-product">
+        <th scope="row">{{ forloop.counter }}</th>
+        <td class="row" style="margin: 0; padding: 2px;">
+          <h6 class="col-5" style="padding: 10px;">
+            <a href="{{product.get_absolute_url}}">{{product.name}}</a>
+          </h6>
+          <form
+            method="POST"
+            action="{% url 'cart:cartitem' %}"
+            data-endpoint="{% url 'cart:cart-api' %}"
+            class="cartitem col-5"
+          >
+            {% csrf_token %}
+            <input type="hidden" name="removeitem" value="{{product.slug}}" />
+            <h6 class="text-center col-8 mr-auto ml-auto" style="padding: 0;">
+              <button class="btn btn-danger mt-1">
+                remove
+              </button>
+            </h6>
+          </form>
+        </td>
+        <td>{{product.price}}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="2" class="text-center">subtotals</td>
+        <td><span id="subtotal">{{ subtotal }}</span></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="text-center">total</td>
+        <td><span id="total">{{ total }}</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="float: right;">
+    <form action="{% url 'billing:login' %}" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-info">Check Out</button>
+    </form>
+  </div>
+  {% else %}
+  <h1>Your card is Empty</h1>
+  {% endif %}
+</div>
+
+{% endblock content%} {% block javascript %}
+<script>
+  $(document).ready(function () {
+    var form = $(".cartitem").submit(function (event) {
+      event.preventDefault();
+      console.log("not working");
+      var actionendpoint = $(this).attr("action");
+      var method = form.attr("method");
+      var data = $(this).serialize();
+      console.log(data);
+
+      $.ajax({
+        url: actionendpoint,
+        method: method,
+        data: data,
+        success: function (data) {
+          console.log("success");
+          var actionAPI = form.attr("data-endpoint");
+          var cartTable = $(".cart-table");
+          var cartBody = cartTable.find(".cart-body");
+          var cartrows = cartBody.find(".cart-product");
+          $.ajax({
+            url: actionAPI,
+            method: "GET",
+            success: function (responsefromserver) {
+              console.log("success from inner ajax");
+              console.log(responsefromserver);
+              if (responsefromserver.totalitem > 0) {
+                cartrows.html("");
+                $("#subtotal").text(responsefromserver.subtotal);
+                $("#total").text(responsefromserver.total);
+                $("#totalitem").text(responsefromserver.totalitem);
+                let i = responsefromserver.totalitem;
+                $.each(responsefromserver.products, function (index, object) {
+                  cartBody.prepend(
+                    `<tr class="cart-product"><th scope="row">${i}</th><td class="row" style="margin: 0; padding: 2px;"><h6 class="col-2" style="padding: 10px;"><a href="${object.url}">${object.name}</a></h6><form method="POST" action=" {% url 'cart:cartitem' %}" data-endpoint="{% url 'cart:cart-api' %}" class="cartitem">{% csrf_token %}<input type="hidden" name="removeitem" value="${object.slug}" /><h6 class="text-center col-8 mr-auto ml-auto" style="padding: 0;"><button class="btn btn-danger mt-1">remove</button></h6></form></td><td>${object.price}</td></tr>`
+                  );
+                  i--;
+                });
+              } else {
+                cartTable.html("");
+                $("#totalitem").text(responsefromserver.totalitem);
+                $(".cart-main").text("Your Car Is Empty");
+              }
+            },
+            error: function (errordata) {
+              console.log("error");
+              console.log(errordata);
+            },
+          });
+        },
+        error: function (error) {
+          console.log("error");
+        },
+      });
+    });
+  });
+</script>
+
+{% endblock javascript %}

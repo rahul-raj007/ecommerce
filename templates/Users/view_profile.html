@@ -1,0 +1,55 @@
+{% extends 'master.html' %}
+<!--  -->
+
+{% load static %}
+
+<!--  -->
+
+{% block content %}
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-6">
+      <img
+        src="{{user.profile_pic.url}}"
+        alt=""
+        width="200rem"
+        height="200rem"
+      />
+    </div>
+    <div class="col-6">
+      <div class="row">
+        <div class="col-12">
+          <h2>{{user.get_full_name}}</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h5>Date Of Birth:<span>{{user.DOB|date:"d-m-Y"}}</span></h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h5>
+            STATE: {% if user.state %}<span>{{user.state}}</span>{% else %}<span
+              >Not Available</span
+            >{% endif %}
+          </h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h5>
+            COUNTRY: {% if user.country %} <span>{{user.country}}</span>
+            <!--  -->
+            {% else %}<span>Not Available</span>{% endif %}
+          </h5>
+          <a href="{% url 'user:update_profile' user.unique_id %}"
+            ><button class="btn btn-danger">Update Profile</button></a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content%}
