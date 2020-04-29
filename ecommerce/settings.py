@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'addresses.apps.AddressesConfig',
     'payments.apps.PaymentsConfig',
     'bootstrap4',
-    'bootstrap_datepicker_plus'
+    'bootstrap_datepicker_plus',
+    'contact_us.apps.ContactUsConfig'
 ]
 
 MIDDLEWARE = [
