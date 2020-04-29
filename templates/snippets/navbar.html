@@ -4,6 +4,7 @@
 <!--  -->
 {% url 'user:login_url' as login_url %}
 {% url 'user:logout' as logout_url %}
+{% url 'contact_us:contact_us' as contact_us_url %}
 
 {% url 'user:display_profile' as display_profile_url %}
 <!--  -->
@@ -30,7 +31,8 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
+          <a class="nav-link {% if request.path == contact_us_url %}active {% endif %}" 
+          href='{{ contact_us_url }}'>Contact</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">About</a>
