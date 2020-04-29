@@ -1,0 +1,24 @@
+{% extends 'master.html' %} {% load static %}
+<!--  -->
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'css/contact_us.css' %}" />
+
+{% endblock stylesheet %} {% block content %}
+
+<div class="container">
+  <div class="row boxes">
+    <div class="col-6 mx-auto">
+      <div class="boxes1">
+        <form action="{% url 'contact_us:contact_us' %}" method="POST">
+          {{form.as_p}}
+        </form>
+        <div style="float: right;">
+          <button type="submit" class="btn btn-info btn-sm">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  -->
+{% endblock content %}
